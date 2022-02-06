@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -6,9 +8,11 @@ public class Player : MonoBehaviour
     public float straveSpeed = 5f;
     public float straveDistance = 3f;
     public Animator playerAnimator;
+    public Text textCoins;
 
     private Rigidbody _rb;
     private Vector3 _seterLinePosition;
+    private int coins;
 
     private void Start()
     {
@@ -42,6 +46,24 @@ public class Player : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, transform.position.y, _seterLinePosition.z), straveSpeed);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Obstacle")
+        {
+            SceneManager.LoadScene(1);
+        }
+        if (other.tag == "Coin")
+        {
+            Destroy(other.gameObject);
+            AddCoins(1);
+        }
+        if (other.tag == "DoubleCoin")
+        {
+            Destroy(other.gameObject);
+            AddCoins(2);
+        }
+    }
     private void Jump()
     {
         playerAnimator.SetBool("Jumped", true);
@@ -73,5 +95,10 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
+    }
+    public void AddCoins(int coins)
+    {
+        this.coins += coins;
+        textCoins.text= this.coins.ToString();
     }
 }
