@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     {
         if(other.tag == "Obstacle")
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(0);
         }
         if (other.tag == "Coin")
         {
