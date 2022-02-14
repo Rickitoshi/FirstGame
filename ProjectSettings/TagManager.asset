@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - DoubleCoin
   - FinishFloor
+  - Transport
   layers:
   - Default
   - TransparentFX

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuControl : MonoBehaviour
 {
-    public float delay = 1f;
+    public float Delay = 1f;
     private Animator _playerAnimator;
     private Rigidbody _playerRigidbody;
 
@@ -16,9 +16,9 @@ public class MenuControl : MonoBehaviour
 
     public void OnClickPlay()
     {
-        _playerAnimator.SetBool("Jumped", true);
+        _playerAnimator.SetBool("isJumped", true);
         _playerRigidbody.AddForce(Vector3.up * 12f, ForceMode.Impulse);
-        StartCoroutine(CorountineStart(delay));
+        StartCoroutine(CorountineStart(Delay));
     }
 
     public void OnClickExit()

@@ -4,52 +4,37 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public float jumpForce = 1f;
-    public float straveSpeed = 5f;
-    public float straveDistance = 3f;
-    public Animator playerAnimator;
-    public Text textCoins;
+    public float JumpForce = 1f;
+    public Animator PlayerAnimator;
+    public Text TextCoins;
 
-    private Rigidbody _rb;
-    private Vector3 _seterLinePosition;
-    private int coins;
+    private Rigidbody _rigidBody;
+    private int _coins;
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _seterLinePosition = new Vector3(0, 0, 0);
+        _rigidBody = GetComponent<Rigidbody>();
     }
     private void Update()
     {
-        if (playerAnimator.GetInteger("StraveDirection") == 0)
-        {
-            if (Input.touchCount > 0) Swipe();
+        if (Input.touchCount > 0) Swipe();
 
-            if (Input.GetKeyDown(KeyCode.D) & transform.position.z < straveDistance)
-            {
-                Strave(1, straveDistance);
-            }
-            if (Input.GetKeyDown(KeyCode.A) & transform.position.z > -straveDistance)
-            {
-                Strave(-1, -straveDistance);
-            }
-            if (Input.GetAxis("Jump") > 0 & !playerAnimator.GetBool("Jumped"))
-            {
-                Jump();
-            }
+        if (Input.GetAxis("Jump") > 0 && !PlayerAnimator.GetBool("isJumped"))
+        {
+            Jump();
         }
     }
     private void FixedUpdate()
     {
-        if (_seterLinePosition.z != transform.position.z)
+        if (transform.parent && transform.position.z - transform.parent.position.z != 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, transform.position.y, _seterLinePosition.z), straveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, transform.position.y, transform.parent.position.z), 0.01f);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Obstacle")
+        if (other.tag == "Obstacle")
         {
             SceneManager.LoadScene(0);
         }
@@ -66,31 +51,35 @@ public class Player : MonoBehaviour
     }
     private void Jump()
     {
-        playerAnimator.SetBool("Jumped", true);
-        _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        PlayerAnimator.SetBool("isJumped", true);
+        _rigidBody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
     }
-    private void Strave(int straveDirection, float straveDistance)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        playerAnimator.SetInteger("StraveDirection", straveDirection);
-        _seterLinePosition += new Vector3(0, 0, straveDistance);
+        if (collision.gameObject.tag == "Transport")
+        {
+            if (transform.rotation.x < 0.06) transform.parent = collision.transform;
+        }
+        if(collision.gameObject.tag == "Floor")
+        {
+            SceneManager.LoadScene(0);
+        }
     }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Transport")
+        {
+            transform.parent = null;
+        }
+    }
+
     private void Swipe()
     {
         Vector2 deltaSwipe = Input.GetTouch(0).deltaPosition;
-        if(Mathf.Abs(deltaSwipe.x) > Mathf.Abs(deltaSwipe.y))
+        if(Mathf.Abs(deltaSwipe.x) < Mathf.Abs(deltaSwipe.y))
         {
-            if( deltaSwipe.x > 0 & transform.position.z < straveDistance)
-            {
-                Strave(1, straveDistance);
-            }
-            if (deltaSwipe.x < 0 & transform.position.z > -straveDistance)
-            {
-                Strave(-1, -straveDistance);
-            }
-        }
-        else
-        {
-            if (deltaSwipe.y > 0 & !playerAnimator.GetBool("Jumped"))
+            if (deltaSwipe.y > 0 && !PlayerAnimator.GetBool("isJumped"))
             {
                 Jump();
             }
@@ -98,7 +87,8 @@ public class Player : MonoBehaviour
     }
     public void AddCoins(int coins)
     {
-        this.coins += coins;
-        textCoins.text= this.coins.ToString();
+        this._coins += coins;
+        TextCoins.text= this._coins.ToString();
     }
+
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    public GameObject[] roadPrefabs;
+    public GameObject[] RoadPrefabs;
 
     private void Start()
     {
@@ -22,6 +22,6 @@ public class Collector : MonoBehaviour
     }
     private void SpawnRoad(int index, float position)
     {
-        Instantiate(roadPrefabs[index], new Vector3(position, 0, 0), transform.rotation);
+        Instantiate(RoadPrefabs[index], new Vector3(position, 0, 0), transform.rotation);
     }
 }
