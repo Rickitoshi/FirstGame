@@ -17,7 +17,7 @@ public class MenuControl : MonoBehaviour
     public void OnClickPlay()
     {
         _playerAnimator.SetBool("isJumped", true);
-        _playerRigidbody.AddForce(Vector3.up * 12f, ForceMode.Impulse);
+        _playerRigidbody.AddForce(Vector3.up * 16f, ForceMode.Impulse);
         StartCoroutine(CorountineStart(Delay));
     }
 

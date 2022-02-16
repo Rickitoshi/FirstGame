@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     {
         if (transform.parent && transform.position.z - transform.parent.position.z != 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, transform.position.y, transform.parent.position.z), 0.01f);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, transform.position.y, transform.parent.position.z), 0.03f);
         }
     }
 
@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Transport")
         {
+            print("enter");
             if (transform.rotation.x < 0.06) transform.parent = collision.transform;
         }
         if(collision.gameObject.tag == "Floor")
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Transport")
         {
+            print("exit");
             transform.parent = null;
         }
     }
@@ -79,7 +81,7 @@ public class Player : MonoBehaviour
         Vector2 deltaSwipe = Input.GetTouch(0).deltaPosition;
         if(Mathf.Abs(deltaSwipe.x) < Mathf.Abs(deltaSwipe.y))
         {
-            if (deltaSwipe.y > 0 && !PlayerAnimator.GetBool("isJumped"))
+            if (deltaSwipe.y > 5f && !PlayerAnimator.GetBool("isJumped"))
             {
                 Jump();
             }

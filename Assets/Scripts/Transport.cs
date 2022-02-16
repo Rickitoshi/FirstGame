@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Transport : MonoBehaviour
@@ -43,14 +44,13 @@ public class Transport : MonoBehaviour
     private void Swipe()
     {
         Vector2 deltaSwipe = Input.GetTouch(0).deltaPosition;
-
         if (Mathf.Abs(deltaSwipe.x) > Mathf.Abs(deltaSwipe.y))
         {
-            if (deltaSwipe.x > 0 && _targetLinePosition.z < 3)
+            if (deltaSwipe.x > 8f && _targetLinePosition.z < 3)
             {
                 Strave(1, StraveDistance);
             }
-            if (deltaSwipe.x < 0 && _targetLinePosition.z > -3)
+            if (deltaSwipe.x < -8f && _targetLinePosition.z > -3)
             {
                 Strave(-1, -StraveDistance);
             }

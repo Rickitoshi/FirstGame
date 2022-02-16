@@ -7,9 +7,5 @@ public class Floor : MonoBehaviour
     void FixedUpdate()
     {
         transform.position += new Vector3(MoveSpeed, 0, 0);
-        if (transform.position.x > 105)
-        {
-            Destroy(gameObject);
-        }
     }
 }

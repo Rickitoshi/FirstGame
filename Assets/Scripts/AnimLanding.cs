@@ -6,4 +6,5 @@ public class AnimLanding : StateMachineBehaviour
     {
         animator.SetBool("isJumped", false);
     }
+
 }
